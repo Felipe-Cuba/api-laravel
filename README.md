@@ -182,7 +182,7 @@ Caso você queira rodar os testes unitários, será necessário mais algumas con
 </testsuites>
 ```
 
-> O Módulo padrão nesse proneto é `Product`.
+> O Módulo padrão nesse projeto é `Product`.
 
 > Para cada módulo, você deverá adicionar uma linha com o nome do módulo.
 
