@@ -10,11 +10,22 @@ class ProductControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * The status map for the product statuses.
+     *
+     * @var array
+     */
     private $statusMap = [
         1 => 'Em estoque',
         2 => 'Em reposição',
         3 => 'Em falta',
     ];
+
+    /**
+     * The reverse status map for the product statuses.
+     *
+     * @var array
+     */
 
     private $reverseStatusMap = [
         'em_estoque' => 1,

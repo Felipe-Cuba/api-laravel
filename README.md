@@ -2,6 +2,10 @@
 
 Este projeto é uma API construída com Laravel. Aqui irei descrever o passo a passo para rodar a aplicação localmente e conectar ao banco de dados da sua preferência.
 
+## Documentação
+
+Para acessar a documentação da API, acesse a página: [Documentação API Laravel](https://documenter.getpostman.com/view/20400369/2sB2cPkRCV).
+
 ---
 
 ## Requisitos

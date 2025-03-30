@@ -13,8 +13,16 @@ use Modules\Product\Models\Product;
 
 class ProductController extends Controller implements ProductControllerInterface
 {
+    /**
+     * Repository for managing products
+     * @var ProductRepositoryInterface
+     */
     protected $productRepository;
 
+    /**
+     * Maps readable status strings to their respective integer values in the database
+     * @var array
+     */
     private $reverseStatusMap = [
         'em_estoque' => 1,
         'em_reposicao' => 2,
@@ -29,6 +37,8 @@ class ProductController extends Controller implements ProductControllerInterface
     public function list(): JsonResponse
     {
         try {
+            // Fetch all products from the repository
+            // Map the products to an array format
             $products = $this->productRepository->list()->map(callback: fn(Product $product): array => $product->toArray());
 
             return response()->json($products, 200);
@@ -45,14 +55,18 @@ class ProductController extends Controller implements ProductControllerInterface
 
     public function create(Request $request): JsonResponse
     {
+        // Get the validation rules and messages
         $rules = $this->getCreateRules();
         $messages = $this->getRulesMessages();
 
         try {
+            // Validate the request data
             $productData = $request->validate($rules, $messages);
 
+            // Apply extra validations based on the action (create)
             $productData = $this->applyExtraValidations($productData, 'create');
 
+            // Create the product in the database
             $product = $this->productRepository->create($productData);
 
             return response()->json($product->toArray(), 201);
@@ -77,16 +91,21 @@ class ProductController extends Controller implements ProductControllerInterface
 
     public function update(Request $request, int $productId): JsonResponse
     {
+        // Get the validation rules and messages
         $rules = $this->getUpdateRules();
         $messages = $this->getRulesMessages();
 
         try {
+            // Validate the request data
             $productData = $request->validate($rules, $messages);
 
+            // Check if the product exists
             $currentProduct = $this->productRepository->find($productId);
 
+            // Apply extra validations based on the action (update)
             $productData = $this->applyExtraValidations($productData, 'update', $currentProduct);
 
+            // Update the product
             $product = $this->productRepository->update($productId, $productData);
 
             return response()->json($product->toArray(), 200);
@@ -143,6 +162,15 @@ class ProductController extends Controller implements ProductControllerInterface
         }
     }
 
+    /**
+     * Applies extra validations based on the action (create/update).
+     * @private
+     * @param array $data
+     * @param string $action
+     * @param Product|null $product
+     * @return array
+     */
+
     private function applyExtraValidations(array $data, string $action, ?Product $product = null)
     {
         if ($action === 'create') {
@@ -154,6 +182,14 @@ class ProductController extends Controller implements ProductControllerInterface
         return $data;
     }
 
+    /**
+     * Validates product status and stock quantity during creation.
+     * If stock quantity is zero, sets status to "out of stock" if not already set.
+     *
+     * @private
+     * @param array $data
+     * @return array
+     */
     private function applyCreateExtraValidations(array $data)
     {
         if ($data['status'] !== $this->reverseStatusMap['em_falta'] && $data['stock_quantity'] === 0) {
@@ -163,6 +199,18 @@ class ProductController extends Controller implements ProductControllerInterface
         return $data;
     }
 
+    /**
+     *
+     * Validates product status and stock quantity during update.
+     * If stock quantity is zero, sets status to "out of stock" if not already set.
+     *
+     * @private
+     *
+     * @param array $data
+     * @param Product $product
+     *
+     * @return array
+     */
     private function applyUpdateExtraValidations(array $data, Product $product)
     {
         $productStatus = array_key_exists('status', $data) ? $data['status'] : $product->status;
@@ -175,6 +223,12 @@ class ProductController extends Controller implements ProductControllerInterface
         return $data;
     }
 
+
+    /**
+     * Gets the validation rules for product creation.
+     * @private
+     * @return array
+     */
     private function getCreateRules(): array
     {
         return [
@@ -185,6 +239,12 @@ class ProductController extends Controller implements ProductControllerInterface
             'stock_quantity' => 'required|integer|min:0',
         ];
     }
+
+    /**
+     * Get the validation rules for product update.
+     * @private
+     * @return array
+     */
 
     private function getUpdateRules(): array
     {
@@ -199,6 +259,12 @@ class ProductController extends Controller implements ProductControllerInterface
         ];
     }
 
+
+    /**
+     * Get the validation messages for product creation and update.
+     * @private
+     * @return array
+     */
     private function getRulesMessages(): array
     {
         return [

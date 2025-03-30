@@ -24,21 +24,33 @@ class Product extends Model
      */
     protected $fillable = ['name', 'description', 'price', 'status', 'stock_quantity'];
 
+    /**
+     * Convert the price attribute to a float when accessed.
+     */
     public function getPriceAttribute($value)
     {
         return (float) $value;
     }
 
+    /**
+     * Convert the stock_quantity attribute to an integer when accessed.
+     */
     public function getStockQuantityAttribute($value)
     {
         return (int) $value;
     }
 
+    /**
+     * Convert the status attribute to an integer when accessed.
+     */
     public function getStatusAttribute($value)
     {
         return (int) $value;
     }
 
+    /**
+     * Convert the status string attribute to a readable string when accessed.
+     */
     public function getStatusStringAttribute($value)
     {
         $statusMap = [
@@ -50,6 +62,9 @@ class Product extends Model
         return $statusMap[$this->status] ?? 'Em falta';
     }
 
+    /**
+     * Transform the model into an array.
+     */
     public function toArray(): array
     {
         return [

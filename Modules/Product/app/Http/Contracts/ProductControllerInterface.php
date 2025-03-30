@@ -12,37 +12,41 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 interface ProductControllerInterface
 {
     /**
-     * Lista todos os produtos.
+     * Lists all products.
      *
-     * @return JsonResponse Retorna uma resposta JSON contendo a lista de produtos.
-     * @throws \Exception Caso ocorra um erro ao buscar os produtos.
+     * @return JsonResponse Returns a JSON response containing the list of products.
+     * @throws \Exception If an error occurs while fetching the products.
      */
     public function list(): JsonResponse;
+
     /**
-     * Cria um novo produto.
+     * Creates a new product.
      *
-     * @param Request $request Dados validados para criação do produto.
-     * @return JsonResponse Retorna uma resposta JSON com o produto criado.
-     * @throws ValidationException Caso ocorra um erro de validação nos dados.
+     * @param Request $request Validated data for creating the product.
+     * @return JsonResponse Returns a JSON response with the created product.
+     * @throws ValidationException If there is a validation error with the data.
      */
     public function create(Request $request): JsonResponse;
+
     /**
-     * Atualiza um produto existente.
+     * Updates an existing product.
      *
-     * @param Request $request Dados validados para atualização do produto.
-     * @param int $productId ID do produto que será atualizado.
-     * @return JsonResponse Retorna uma resposta JSON com o produto atualizado.
-     * @throws ModelNotFoundException Caso o produto não seja encontrado.
-     * @throws ValidationException Caso ocorra um erro de validação nos dados.
+     * @param Request $request Validated data for updating the product.
+     * @param int $id ID of the product to be updated.
+     * @return JsonResponse Returns a JSON response with the updated product.
+     * @throws ModelNotFoundException If the product is not found.
+     * @throws ValidationException If there is a validation error with the data.
      */
     public function update(Request $request, int $id): JsonResponse;
+
     /**
-     * Exclui um produto pelo ID.
+     * Deletes a product by its ID.
      *
-     * @param Request $request Dados da requisição (não utilizados diretamente).
-     * @param int $productId ID do produto que será excluído.
-     * @return JsonResponse Retorna uma resposta JSON com uma mensagem de sucesso.
-     * @throws ModelNotFoundException Caso o produto não seja encontrado.
+     * @param Request $request Request data (not directly used).
+     * @param int $id ID of the product to be deleted.
+     * @return JsonResponse Returns a JSON response with a success message.
+     * @throws ModelNotFoundException If the product is not found.
      */
     public function delete(Request $request, int $id): JsonResponse;
 }
+
