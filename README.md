@@ -244,6 +244,8 @@ Caso você queira rodar os testes unitários, será necessário mais algumas con
         <env name="DB_PASSWORD" value="" />
 ```
 
+> ❗ Lembre-se de criar o banco de dados de teste (ex: `api-laravel-test`)
+
 -   Depois, rode os comandos abaixo:
 
     ```bash
